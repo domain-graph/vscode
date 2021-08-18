@@ -1,70 +1,62 @@
-# domain-graph-vscode README
+[![master](https://github.com/{ORG_NAME}/{REPO_NAME}/workflows/build/badge.svg?branch=master&event=push)](https://github.com/{ORG_NAME}/{REPO_NAME}/actions?query=workflow%3Abuild+branch%3Amaster+event%3Apush)
 
-This is the README for your extension "domain-graph-vscode". After writing up a brief description, we recommend including the following sections.
+# domain-graph-vscode
 
-## Features
+Blank web application built with Typescript and LESS
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## How To:
 
-For example if there is an image subfolder under your extension project workspace:
+### Bundle Typescript and LESS files
 
-\!\[feature X\]\(images/feature-x.png\)
+The `build` script uses Webpack to perform the transpilation and bundling steps:
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+1. `npm run build`
 
-## Requirements
+Typescript files will be transpiled and bundled in `main.[hash].js`, LESS files imported by .ts files will be bundled in `main.[hash].css`, and both of those files will be reference by `index.html`. (The build output can be found in `./dist`)
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+To build for production, set the `NODE_ENV` environment variable to `production`:
 
-## Extension Settings
+1. `NODE_ENV=production npm run build`
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+### Run the Dev Server with Hot Module Reloading (HMR)
 
-For example:
+To run the server:
 
-This extension contributes the following settings:
+1. `npm start`
+1. Open `localhost:9000` in your browser
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+Any changes to `index.html`, `*.ts`, or `*.less` files will be immediately reflected in the browser without required a page refresh.
 
-## Known Issues
+### Run unit tests
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+The `test` script will run any file ending with `.tests.ts`:
 
-## Release Notes
+1. `npm test`
 
-Users appreciate release notes as you update your extension.
+Code coverage may be viewed in `./coverage/lcov-report/index.html`.
 
-### 1.0.0
+### Add code or style files
 
-Initial release of ...
+#### Code
 
-### 1.0.1
+The entry point of the Typescript files is `./src/index.ts`; therefore, any file that will be included in the `.js` bundle must be ultimately imported from `index.ts`.
 
-Fixed issue #.
+#### Styles
 
-### 1.1.0
+`*.less` files must be imported from Typescript in order to be included in the `.css` bundle. Note that even though the styles are "imported" into a code file, they are NOT inlined into the `.js` bundle. The `MiniCssExtractPlugin` ensures that any LESS styles imported into code are moved from the code into the style bundle. (The `less.d.ts` file prevents compile-time errors when importing non-Typescript content.)
 
-Added features X, Y, and Z.
+Example:
 
------------------------------------------------------------------------------------------------------------
-## Following extension guidelines
+```ts
+import './index.less';
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+const code = 'goes here';
+```
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+#### Markup
 
-## Working with Markdown
+Add your markup to `./src/index.html`. This file is used as the "template" when running Webpack. The resulting file will include script and link tags to the `.js` and `.css` bundles.
 
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
+---
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Generated with [generator-ts-website](https://www.npmjs.com/package/generator-ts-website)

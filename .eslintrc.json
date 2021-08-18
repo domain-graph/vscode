@@ -1,24 +1,64 @@
 {
-    "root": true,
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "@typescript-eslint"
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "project": "tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint", "eslint-plugin-import"],
+  "rules": {
+    "@typescript-eslint/naming-convention": "warn",
+    "@typescript-eslint/semi": "warn",
+    "curly": "warn",
+    "eqeqeq": ["warn", "always"],
+    "no-throw-literal": "error",
+    "semi": "off",
+    "@typescript-eslint/adjacent-overload-signatures": "error",
+    "@typescript-eslint/no-empty-function": "error",
+    "@typescript-eslint/no-empty-interface": "warn",
+    "@typescript-eslint/no-namespace": "error",
+    "@typescript-eslint/prefer-for-of": "warn",
+    "@typescript-eslint/triple-slash-reference": "error",
+    "@typescript-eslint/unified-signatures": "warn",
+    "no-param-reassign": "error",
+    "import/no-unassigned-import": [
+      "error",
+      {
+        "allow": ["**/*.less"]
+      }
     ],
-    "rules": {
-        "@typescript-eslint/naming-convention": "warn",
-        "@typescript-eslint/semi": "warn",
-        "curly": "warn",
-        "eqeqeq": "warn",
-        "no-throw-literal": "warn",
-        "semi": "off"
-    },
-    "ignorePatterns": [
-        "out",
-        "dist",
-        "**/*.d.ts"
-    ]
+    "comma-dangle": ["error", "only-multiline"],
+    "constructor-super": "error",
+    "no-cond-assign": "error",
+    "no-duplicate-case": "error",
+    "no-duplicate-imports": "error",
+    "no-empty": [
+      "error",
+      {
+        "allowEmptyCatch": true
+      }
+    ],
+    "spaced-comment": "error",
+    "no-invalid-this": "error",
+    "no-new-wrappers": "error",
+    "no-redeclare": "error",
+    "no-sequences": "error",
+    "no-shadow": [
+      "error",
+      {
+        "hoist": "all"
+      }
+    ],
+    "no-unsafe-finally": "error",
+    "no-unused-labels": "error",
+    "no-var": "warn",
+    "prefer-const": "warn"
+  },
+  "ignorePatterns": ["dist", "**/*.d.ts"],
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": ["prettier"]
 }
