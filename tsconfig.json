@@ -4,12 +4,14 @@
     "target": "es6",
     "outDir": "dist",
     "lib": ["es6", "dom"],
-    "sourceMap": true,
+    "sourceMap": false,
     "rootDir": "src",
     "strict": true,
     "noImplicitReturns": true,
-    "declaration": true
+    "declaration": false,
+    "jsx": "react",
+    "esModuleInterop": true
   },
-  "exclude": ["dist"],
+  "exclude": ["src/webview"],
   "include": ["src"]
 }

@@ -3,23 +3,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   target: 'web',
-  entry: './src/webview/index.ts',
-  optimization: {
-    splitChunks: {
-      chunks: 'initial',
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendor',
-          chunks: 'all',
-        },
-      },
-    },
-  },
+  entry: './src/webview/index.tsx',
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
       },
@@ -33,4 +21,7 @@ module.exports = {
       template: './src/webview/index.html',
     }),
   ],
+  resolve: {
+    extensions: ['.js', '.ts', '.tsx'],
+  },
 };

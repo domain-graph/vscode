@@ -4,9 +4,9 @@
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module",
-    "project": "tsconfig.json"
+    "project": "tsconfig.eslint.json"
   },
-  "plugins": ["@typescript-eslint", "eslint-plugin-import"],
+  "plugins": ["@typescript-eslint", "eslint-plugin-import", "react-hooks"],
   "rules": {
     "@typescript-eslint/naming-convention": "warn",
     "@typescript-eslint/semi": "warn",
@@ -53,12 +53,14 @@
     "no-unsafe-finally": "error",
     "no-unused-labels": "error",
     "no-var": "warn",
-    "prefer-const": "warn"
+    "prefer-const": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   },
   "ignorePatterns": ["dist", "**/*.d.ts"],
   "env": {
     "es6": true,
     "node": true
   },
-  "extends": ["prettier"]
+  "extends": ["prettier", "plugin:react-hooks/recommended"]
 }
