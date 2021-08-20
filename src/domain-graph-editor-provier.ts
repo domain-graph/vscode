@@ -67,15 +67,21 @@ export class DomainGraphEditorProvider
     const scriptUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this.context.extensionUri, 'dist', 'main.js'),
     );
+
+    const styleUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this.context.extensionUri, 'dist', 'main.css'),
+    );
+
     return `
       <!DOCTYPE html>
         <html>
           <head>
             <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+            <script defer="defer" src="${scriptUri}">
+            </script><link href="${styleUri}" rel="stylesheet">
           </head>
           <body>
             <div id="app-root">React has not yet loaded</div>
-            <script src="${scriptUri}" />
           </body>
         </html>`;
   }
