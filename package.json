@@ -10,14 +10,20 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:domain-graph-vscode.helloWorld"
+    "onCustomEditor:domain-graph-vscode.domainGraph"
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
+    "customEditors": [
       {
-        "command": "domain-graph-vscode.helloWorld",
-        "title": "Hello World"
+        "viewType": "domain-graph-vscode.domainGraph",
+        "displayName": "Domain Graph",
+        "selector": [
+          {
+            "filenamePattern": "*.graphql"
+          }
+        ],
+        "priority": "default"
       }
     ]
   },
