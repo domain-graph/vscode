@@ -12,6 +12,5 @@
     "jsx": "react",
     "esModuleInterop": true
   },
-  "exclude": ["src/webview"],
   "include": ["src"]
 }

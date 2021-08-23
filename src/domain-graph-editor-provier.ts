@@ -15,14 +15,14 @@ export class DomainGraphEditorProvider
       {
         webviewOptions: {
           // enableFindWidget: true,
-          retainContextWhenHidden: true, // TODO: rehydrate using Redux state
+          // retainContextWhenHidden: true, // TODO: rehydrate using Redux state
         },
       },
     );
     return providerRegistration;
   }
 
-  private static readonly viewType = 'domain-graph-vscode.domainGraph';
+  public static readonly viewType = 'domain-graph-vscode.domainGraph';
 
   async resolveCustomTextEditor(
     document: vscode.TextDocument,
@@ -35,11 +35,17 @@ export class DomainGraphEditorProvider
         vscode.Uri.file(path.join(this.context.extensionPath, 'dist')),
       ],
     };
-    webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview);
+    // TODO: send document content to hydrate initial store
+    webviewPanel.webview.html = this.getHtmlForWebview(
+      webviewPanel.webview,
+      document.getText(),
+    );
 
     // TODO: https://github.com/microsoft/vscode-extension-samples/blob/4a0b22cf62265482f892eee9142c37b64eee209a/custom-editor-sample/src/catScratchEditor.ts#L18
 
     function updateWebview() {
+      const text = document.getText();
+      console.log({ text });
       const message: Message = {
         type: 'update',
         text: document.getText(),
@@ -63,13 +69,21 @@ export class DomainGraphEditorProvider
     updateWebview();
   }
 
-  private getHtmlForWebview(webview: vscode.Webview): string {
+  private getHtmlForWebview(
+    webview: vscode.Webview,
+    documentText: string,
+  ): string {
     const scriptUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this.context.extensionUri, 'dist', 'main.js'),
     );
 
     const styleUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this.context.extensionUri, 'dist', 'main.css'),
+    );
+
+    const initialState = JSON.stringify({ documentText }).replace(
+      /[^\\]\"/g,
+      '\\"',
     );
 
     return `
@@ -81,6 +95,7 @@ export class DomainGraphEditorProvider
             </script><link href="${styleUri}" rel="stylesheet">
           </head>
           <body>
+            <script>window.$INITIAL_STATE="${initialState}";</script>
             <div id="app-root">React has not yet loaded</div>
           </body>
         </html>`;

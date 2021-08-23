@@ -15,6 +15,8 @@ import {
 } from 'graphql';
 
 import { Message } from '../message-types';
+import { WebviewRepository } from './webview-respository';
+import { getInitialState } from './initial-state';
 
 export class NullRepository implements SaveStateRepository {
   has(id: string): Promise<boolean> {
@@ -40,18 +42,29 @@ export class NullRepository implements SaveStateRepository {
   }
 }
 
-const repository = new NullRepository();
+const vscode = acquireVsCodeApi<Record<string, SaveState>>();
+const repository = new WebviewRepository(vscode);
 
 export const App: React.FC<{}> = () => {
-  const [text, setText] = useState<string>();
-  const [introspection, setIntrospection] =
-    useState<IntrospectionQuery | null>();
+  const [introspection, setIntrospection] = useState<IntrospectionQuery | null>(
+    null,
+  );
+
+  useEffect(() => {
+    const initialState = getInitialState();
+    if (initialState?.documentText) {
+      const { introspection: query } = parse(initialState.documentText);
+      if (query) {
+        setIntrospection(query);
+      }
+    }
+  }, []);
+
   const handleMessage = useCallback((message: Message) => {
     switch (message.type) {
       case 'update':
         // if text is valid gql, then parse as introspection query
         const { introspection: query, errors } = parse(message.text);
-        setText(message.text);
         if (query) {
           setIntrospection(query);
         }

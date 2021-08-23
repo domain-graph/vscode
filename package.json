@@ -33,7 +33,7 @@
     "lint": "eslint . && prettier -c .",
     "test": "jest",
     "prebuild": "npm run lint && rm -rf dist/*",
-    "build": "tsc && webpack --config webpack.prod.js",
+    "build": "tsc -p tsconfig.extension.json && webpack --config webpack.prod.js",
     "tsc": "tsc",
     "webpack": "webpack --config webpack.prod.js",
     "lint:fix": "eslint --fix src/**/*.ts && prettier -w ."
@@ -45,6 +45,7 @@
     "@types/react": "^17.0.18",
     "@types/react-dom": "^17.0.9",
     "@types/vscode": "^1.59.0",
+    "@types/vscode-webview": "^1.57.0",
     "@typescript-eslint/eslint-plugin": "^4.29.2",
     "@typescript-eslint/parser": "^4.29.2",
     "css-hot-loader": "^1.4.4",

@@ -1,0 +1,4 @@
+{
+  "exclude": ["src/webview"],
+  "extends": "./tsconfig.json"
+}
