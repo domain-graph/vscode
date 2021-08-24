@@ -17,10 +17,10 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(DomainGraphEditorProvider.register(context));
-  vscode.window.registerWebviewPanelSerializer(
-    DomainGraphEditorProvider.viewType,
-    new DomainGraphPanelSerializer(),
-  );
+  // vscode.window.registerWebviewPanelSerializer(
+  //   DomainGraphEditorProvider.viewType,
+  //   new DomainGraphPanelSerializer(),
+  // );
 }
 
 export class DomainGraphPanelSerializer
@@ -30,6 +30,7 @@ export class DomainGraphPanelSerializer
     webviewPanel: vscode.WebviewPanel,
     state: unknown,
   ): Promise<void> {
-    console.log(`Got state: ${state}`);
+    vscode.window.showInformationMessage('Got state! 👍');
+    console.log(`Got state: 👍`);
   }
 }

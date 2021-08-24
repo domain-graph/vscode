@@ -17,7 +17,7 @@ export function getInitialState(): InitialState {
   console.log('window.$INITIAL_STATE', window.$INITIAL_STATE);
   if (typeof window.$INITIAL_STATE === 'string') {
     try {
-      const state = JSON.parse(window.$INITIAL_STATE);
+      const state = JSON.parse(decodeURIComponent(window.$INITIAL_STATE));
       documentText =
         typeof state?.documentText === 'string' ? state.documentText : null;
     } catch (ex) {

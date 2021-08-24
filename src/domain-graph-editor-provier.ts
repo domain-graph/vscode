@@ -81,10 +81,7 @@ export class DomainGraphEditorProvider
       vscode.Uri.joinPath(this.context.extensionUri, 'dist', 'main.css'),
     );
 
-    const initialState = JSON.stringify({ documentText }).replace(
-      /[^\\]\"/g,
-      '\\"',
-    );
+    const initialState = encodeURIComponent(JSON.stringify({ documentText }));
 
     return `
       <!DOCTYPE html>
