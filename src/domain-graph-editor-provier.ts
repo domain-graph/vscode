@@ -1,6 +1,8 @@
+import { SaveState } from 'domain-graph';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { Message } from './message-types';
+import { DocumentUpdateMessage, SaveStateMessage } from './message-types';
+import { StateProvider } from './state-provider';
 
 export class DomainGraphEditorProvider
   implements vscode.CustomTextEditorProvider
@@ -14,8 +16,7 @@ export class DomainGraphEditorProvider
       provider,
       {
         webviewOptions: {
-          // enableFindWidget: true,
-          // retainContextWhenHidden: true, // TODO: rehydrate using Redux state
+          retainContextWhenHidden: true, // TODO: prevent the need for this
         },
       },
     );
@@ -35,24 +36,42 @@ export class DomainGraphEditorProvider
         vscode.Uri.file(path.join(this.context.extensionPath, 'dist')),
       ],
     };
-    // TODO: send document content to hydrate initial store
+    const stateProvider = StateProvider.create(
+      document.uri.toString(),
+      this.context.globalState,
+    );
+
+    const documentUri = document.uri.toString();
+
+    const initialState = stateProvider.get(documentUri) || null;
     webviewPanel.webview.html = this.getHtmlForWebview(
       webviewPanel.webview,
       document.getText(),
+      initialState,
     );
 
     // TODO: https://github.com/microsoft/vscode-extension-samples/blob/4a0b22cf62265482f892eee9142c37b64eee209a/custom-editor-sample/src/catScratchEditor.ts#L18
 
     function updateWebview() {
       const text = document.getText();
-      console.log({ text });
-      const message: Message = {
+      const state = stateProvider.get(documentUri) || null;
+      const message: DocumentUpdateMessage = {
         type: 'update',
-        text: document.getText(),
+        documentUri,
+        text,
+        state,
       };
 
       webviewPanel.webview.postMessage(message);
     }
+
+    stateProvider.on('state', (state) => {
+      const message: SaveStateMessage = {
+        type: 'save-state',
+        state,
+      };
+      webviewPanel.webview.postMessage(message);
+    });
 
     const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument(
       (e) => {
@@ -63,7 +82,18 @@ export class DomainGraphEditorProvider
     );
 
     webviewPanel.onDidDispose(() => {
+      stateProvider.destroy();
       changeDocumentSubscription.dispose();
+    });
+
+    webviewPanel.onDidChangeViewState((e) => {
+      e.webviewPanel.active ? stateProvider.resume() : stateProvider.pause();
+    });
+
+    webviewPanel.webview.onDidReceiveMessage((msg: SaveStateMessage) => {
+      if (msg.state) {
+        stateProvider.set(msg.state);
+      }
     });
 
     updateWebview();
@@ -72,6 +102,7 @@ export class DomainGraphEditorProvider
   private getHtmlForWebview(
     webview: vscode.Webview,
     documentText: string,
+    state: SaveState | null,
   ): string {
     const scriptUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this.context.extensionUri, 'dist', 'main.js'),
@@ -81,7 +112,9 @@ export class DomainGraphEditorProvider
       vscode.Uri.joinPath(this.context.extensionUri, 'dist', 'main.css'),
     );
 
-    const initialState = encodeURIComponent(JSON.stringify({ documentText }));
+    const initialState = encodeURIComponent(
+      JSON.stringify({ documentText, state }),
+    );
 
     return `
       <!DOCTYPE html>

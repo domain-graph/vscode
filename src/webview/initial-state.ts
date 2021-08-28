@@ -1,5 +1,8 @@
+import { SaveState } from 'domain-graph';
+
 export type InitialState = {
   documentText: string | null;
+  state: SaveState | null;
 };
 
 declare global {
@@ -11,18 +14,18 @@ declare global {
 }
 
 export function getInitialState(): InitialState {
-  console.log('calling getInitialState');
   let documentText: string | null = null;
+  let saveState: SaveState | null = null;
 
-  console.log('window.$INITIAL_STATE', window.$INITIAL_STATE);
   if (typeof window.$INITIAL_STATE === 'string') {
     try {
       const state = JSON.parse(decodeURIComponent(window.$INITIAL_STATE));
       documentText =
         typeof state?.documentText === 'string' ? state.documentText : null;
+      saveState = state?.state || null;
     } catch (ex) {
       console.error(ex);
     }
   }
-  return { documentText };
+  return { documentText, state: saveState };
 }

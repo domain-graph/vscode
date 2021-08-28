@@ -16,8 +16,6 @@ export class WebviewRepository implements SaveStateRepository {
 
     const state = getState()?.[id];
 
-    console.log({ state });
-
     return (
       state || {
         canvas: {
@@ -34,7 +32,6 @@ export class WebviewRepository implements SaveStateRepository {
 
   async set(id: string, state: SaveState): Promise<void> {
     const { getState, setState } = this.vscode;
-    console.log({ state });
     setState({ ...getState(), [id]: state });
   }
 

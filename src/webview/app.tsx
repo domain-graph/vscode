@@ -14,8 +14,7 @@ import {
   introspectionFromSchema,
 } from 'graphql';
 
-import { Message } from '../message-types';
-import { WebviewRepository } from './webview-respository';
+import { Message, SaveStateMessage } from '../message-types';
 import { getInitialState } from './initial-state';
 
 export class NullRepository implements SaveStateRepository {
@@ -43,12 +42,14 @@ export class NullRepository implements SaveStateRepository {
 }
 
 const vscode = acquireVsCodeApi<Record<string, SaveState>>();
-const repository = new WebviewRepository(vscode);
+const repository = new NullRepository(); // new WebviewRepository(vscode); // TODO: put this back.
 
 export const App: React.FC<{}> = () => {
+  const [documentUri, setDocumentUri] = useState<string>('default');
   const [introspection, setIntrospection] = useState<IntrospectionQuery | null>(
     null,
   );
+  const [saveState, setSaveState] = useState<SaveState | undefined>();
 
   useEffect(() => {
     const initialState = getInitialState();
@@ -58,20 +59,44 @@ export const App: React.FC<{}> = () => {
         setIntrospection(query);
       }
     }
+
+    if (initialState?.state) {
+      setSaveState(initialState?.state);
+    }
   }, []);
 
   const handleMessage = useCallback((message: Message) => {
     switch (message.type) {
       case 'update':
-        // if text is valid gql, then parse as introspection query
+        setDocumentUri(message.documentUri);
         const { introspection: query, errors } = parse(message.text);
         if (query) {
           setIntrospection(query);
         }
+
+        setSaveState(message.state || undefined);
         break;
+      case 'save-state': {
+        const { state } = message;
+        setSaveState(state);
+        break;
+      }
     }
   }, []);
   useMessageListener(handleMessage);
+
+  const handleSaveState = useCallback(
+    (graphId: string, state: SaveState) => {
+      if (graphId === documentUri) {
+        const message: SaveStateMessage = {
+          type: 'save-state',
+          state,
+        };
+        vscode.postMessage(message);
+      }
+    },
+    [documentUri],
+  );
 
   const randomNumber = useMemo(() => Math.random(), []);
   return (
@@ -80,9 +105,11 @@ export const App: React.FC<{}> = () => {
       <h1>Random number: {randomNumber}</h1>
       {!!introspection && (
         <DomainGraph
-          graphId="default"
+          graphId={documentUri}
           introspection={introspection}
           repository={repository}
+          saveState={saveState}
+          onSaveState={handleSaveState}
         ></DomainGraph>
       )}
     </>
