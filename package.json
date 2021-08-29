@@ -1,8 +1,22 @@
 {
   "name": "domain-graph-vscode",
   "displayName": "Domain Graph for VSCode",
-  "description": "Blank web application built with Typescript and LESS",
+  "description": "Beautiful, interactive visualizations for GraphQL schemas",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/domain-graph/vscode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/domain-graph/vscode/issues"
+  },
+  "homepage": "https://github.com/domain-graph/vscode/blob/master/README.md",
+  "license": "MIT",
+  "author": {
+    "name": "Steve Konves",
+    "email": "stephen.konves@gmail.com",
+    "url": "https://github.com/skonves"
+  },
   "engines": {
     "vscode": "^1.59.0"
   },
@@ -89,7 +103,6 @@
     "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^5.8.0"
   },
-  "license": "MIT",
   "dependencies": {
     "domain-graph": "^0.1.3",
     "graphql": "^15.5.1",
