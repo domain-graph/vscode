@@ -10,22 +10,39 @@
     "Other"
   ],
   "activationEvents": [
-    "onCustomEditor:domain-graph-vscode.domainGraph"
+    "onCommand:domain-graph-vscode.showPreview",
+    "onCommand:domain-graph-vscode.showSource"
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "customEditors": [
+    "commands": [
       {
-        "viewType": "domain-graph-vscode.domainGraph",
-        "displayName": "Domain Graph",
-        "selector": [
-          {
-            "filenamePattern": "*.graphql"
-          }
-        ],
-        "priority": "default"
+        "command": "domain-graph-vscode.showPreview",
+        "title": "Domain Graph: Open Preview",
+        "icon": "$(open-preview)",
+        "shortTitle": "Open Preview"
+      },
+      {
+        "command": "domain-graph-vscode.showSource",
+        "title": "Domain Graph: Show Source",
+        "icon": "$(go-to-file)",
+        "shortTitle": "Show Source"
       }
-    ]
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "when": "resourceExtname == .graphql",
+          "command": "domain-graph-vscode.showPreview",
+          "group": "navigation"
+        },
+        {
+          "when": "domainGraphPreviewFocus",
+          "command": "domain-graph-vscode.showSource",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run build",

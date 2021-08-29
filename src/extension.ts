@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { DomainGraphEditorProvider } from './domain-graph-editor-provier';
+import { getPreviewDocumentUri, openPreview } from './webview-provider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -16,11 +16,28 @@ export function activate(context: vscode.ExtensionContext) {
     'Hello World from Domain Graph VSCode Extension!',
   );
 
-  context.subscriptions.push(DomainGraphEditorProvider.register(context));
-  // vscode.window.registerWebviewPanelSerializer(
-  //   DomainGraphEditorProvider.viewType,
-  //   new DomainGraphPanelSerializer(),
-  // );
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'domain-graph-vscode.showPreview',
+      (documentUri: vscode.Uri) => {
+        openPreview(context, documentUri, vscode.ViewColumn.Beside);
+      },
+    ),
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('domain-graph-vscode.showSource', () => {
+      const previewDocumentUri = getPreviewDocumentUri();
+
+      if (previewDocumentUri) {
+        vscode.workspace
+          .openTextDocument(previewDocumentUri)
+          .then((document) => {
+            vscode.window.showTextDocument(document);
+          });
+      }
+    }),
+  );
 }
 
 export class DomainGraphPanelSerializer
