@@ -98,11 +98,8 @@ export const App: React.FC<{}> = () => {
     [documentUri],
   );
 
-  const randomNumber = useMemo(() => Math.random(), []);
   return (
     <>
-      Hello from React!
-      <h1>Random number: {randomNumber}</h1>
       {!!introspection && (
         <DomainGraph
           graphId={documentUri}
