@@ -1,0 +1,74 @@
+// ///// WINDOW /////
+
+// @color-window-background: @temp;
+// @color-window-text-default: var(--vscode-foreground);
+
+///// ICONS /////
+
+@color-icon-default: var(--vscode-foreground);
+
+///// GENERIC BUTTON /////
+
+@color-button-background: var(--vscode-toolbar-hoverBackground);
+@color-button-border: var(--vscode-panel-border);
+@color-button-hover-background: var(--vscode-toolbar-hoverBackground);
+
+///// NODES /////
+
+@color-node-background: var(
+  --vscode-editor-selectionBackground
+); // var(--vscode-tab-inactiveBackground);
+@color-node-border: var(--vscode-editorLineNumber-foreground);
+@color-node-text: var(--vscode-foreground);
+
+@color-selected-node-background: var(
+  --vscode-editor-selectionBackground
+); // var(--vscode-tab-activeBackground);
+@color-selected-node-border: var(--vscode-focusBorder);
+@color-selected-node-text: var(--vscode-foreground);
+
+///// NODE PREVIEWS /////
+
+@color-node-preview-background: var(
+  --vscode-editor-selectionBackground
+); // @color-node-background;
+@color-node-preview-border: @color-node-border;
+@color-node-preview-text: @color-node-text;
+
+@color-node-preview-button-background: @color-node-preview-background;
+@color-node-preview-button-icon: var(--vscode-button-foreground);
+@color-node-preview-button-hover-background: var(
+  --vscode-toolbar-hoverBackground
+);
+@color-node-preview-button-hover-icon: var(--vscode-button-foreground);
+
+///// EDGES /////
+
+@color-edge-background: var(--vscode-panel-background);
+@color-edge-border: var(--vscode-editorLineNumber-foreground);
+@color-edge-chevron: @color-edge-border;
+
+@color-selected-edge-background: var(--vscode-panel-background);
+@color-selected-edge-border: var(--vscode-focusBorder);
+@color-selected-edge-chevron: var(--vscode-focusBorder);
+
+///// EDGE PREVIEWS /////
+
+@color-edge-preview-background: @color-edge-background;
+@color-edge-preview-border: @color-edge-border;
+@color-edge-preview-text: @color-node-text;
+
+///// RADIAL MENUS /////
+
+@color-radial-menu-background: var(--vscode-button-background);
+@color-radial-menu-border: var(--vscode-button-border);
+@color-radial-menu-icon: var(--vscode-button-foreground);
+
+@color-radial-menu-hover-background: var(--vscode-button-hoverBackground);
+@color-radial-menu-hover-border: var(--vscode-button-border);
+@color-radial-menu-hover-icon: var(--vscode-button-foreground);
+
+///// DATA PROVIDER /////
+
+@color-drop-target-border: var(--vscode-editorLineNumber-foreground);
+@color-drop-target-ready-background: var(--vscode-toolbar-hoverBackground);
