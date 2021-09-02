@@ -1,10 +1,10 @@
-<h6 align="center"><img src="resources/icon.png" alt="Logo" height="128" /></h6>
+<div align="center"><img src="resources/icon.png" alt="Logo" height="128" /></div>
 <br/><br/>
 
 <h1 align="center">Domain Graph for VSCode</h1>
 <h3 align="center">Beautiful, interactive visualizations for GraphQL schemas</h3>
 <br/><br/>
-<h6 align="center"><img src="resources/hero.png" alt="Logo"/></h6>
+<div align="center"><img src="resources/hero.png" alt="Logo"/></div>
 <h4 align="center"><em>Example showing <a href="https://docs.github.com/en/graphql/overview/public-schema" rel="external">Github's public schema</a></em></h4>
 <br/><br/>
 
@@ -36,5 +36,5 @@ By directly rendering your actual GraphQL schema, this documenation is always gu
 <br/>
 <br/>
 
-<h4 align="center">Product of Arizona</h4>
-<h4 align="center">🌵</h4>
+<div align="center">Product of Arizona</div>
+<div align="center">🌵</div>
