@@ -17,6 +17,7 @@
     "email": "stephen.konves@gmail.com",
     "url": "https://github.com/skonves"
   },
+  "publisher": "stevekonves",
   "engines": {
     "vscode": "^1.59.0"
   },
