@@ -1,62 +1,40 @@
-[![master](https://github.com/{ORG_NAME}/{REPO_NAME}/workflows/build/badge.svg?branch=master&event=push)](https://github.com/{ORG_NAME}/{REPO_NAME}/actions?query=workflow%3Abuild+branch%3Amaster+event%3Apush)
+<center><img src="resources/icon.png" alt="Logo" height="128" /></center>
+<br/><br/>
 
-# domain-graph-vscode
+<h1 align="center">Domain Graph for VSCode</h1>
+<h3 align="center">Beautiful, interactive visualizations for GraphQL schemas</h3>
+<br/><br/>
+<center><img src="resources/hero.png" alt="Logo"/></center>
+<center><em>Example showing <a href="https://docs.github.com/en/graphql/overview/public-schema" rel="external">Github's public schema</a></em></center>
+<br/><br/>
 
-Blank web application built with Typescript and LESS
+## Easily preview schema files 🔎
 
-## How To:
+Use the preview button on .graphql files to open the Domain Graph visualization. Just like previewing markdown files, changes to your schema file will be reflected on the Domain Graph in real-time. Guarenteed to be the best looking API docs on the planet, or your money back!
 
-### Bundle Typescript and LESS files
+![Preview Button](resources/preview-button.gif)
 
-The `build` script uses Webpack to perform the transpilation and bundling steps:
+## Explore your graph 🧭
 
-1. `npm run build`
+Intuitively expand and collapses types as you move across your graph. It's a fun, satisfying way to discover the Domain Objects in your API and how they connect to each other.
 
-Typescript files will be transpiled and bundled in `main.[hash].js`, LESS files imported by .ts files will be bundled in `main.[hash].css`, and both of those files will be reference by `index.html`. (The build output can be found in `./dist`)
+![Preview Button](resources/node-menu.gif)
 
-To build for production, set the `NODE_ENV` environment variable to `production`:
+![Preview Button](resources/edge-types.png)
 
-1. `NODE_ENV=production npm run build`
+## Discover deeper nuance 🧠
 
-### Run the Dev Server with Hot Module Reloading (HMR)
+Drill into specific Domain Objects and Relations to understand individual properties and nuanced descriptions.
 
-To run the server:
+![Preview Button](resources/spotlight.png)
 
-1. `npm start`
-1. Open `localhost:9000` in your browser
+## Trust your documetaion ❤️
 
-Any changes to `index.html`, `*.ts`, or `*.less` files will be immediately reflected in the browser without required a page refresh.
+Gorgeous enough that you won't want to look away, and accurate enough that you don't need to.
+By directly rendering your actual GraphQL schema, this documenation is always guarenteed to be lock step with your API—if it's in the schema, then it's in the docs! 😄
 
-### Run unit tests
+<br/>
+<br/>
 
-The `test` script will run any file ending with `.tests.ts`:
-
-1. `npm test`
-
-Code coverage may be viewed in `./coverage/lcov-report/index.html`.
-
-### Add code or style files
-
-#### Code
-
-The entry point of the Typescript files is `./src/index.ts`; therefore, any file that will be included in the `.js` bundle must be ultimately imported from `index.ts`.
-
-#### Styles
-
-`*.less` files must be imported from Typescript in order to be included in the `.css` bundle. Note that even though the styles are "imported" into a code file, they are NOT inlined into the `.js` bundle. The `MiniCssExtractPlugin` ensures that any LESS styles imported into code are moved from the code into the style bundle. (The `less.d.ts` file prevents compile-time errors when importing non-Typescript content.)
-
-Example:
-
-```ts
-import './index.less';
-
-const code = 'goes here';
-```
-
-#### Markup
-
-Add your markup to `./src/index.html`. This file is used as the "template" when running Webpack. The resulting file will include script and link tags to the `.js` and `.css` bundles.
-
----
-
-Generated with [generator-ts-website](https://www.npmjs.com/package/generator-ts-website)
+<center>Product of Arizona</center>
+<center>🌵</center>
