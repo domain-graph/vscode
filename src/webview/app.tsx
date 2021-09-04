@@ -21,17 +21,8 @@ export class NullRepository implements SaveStateRepository {
   has(id: string): Promise<boolean> {
     return Promise.resolve(false);
   }
-  get(id: string): Promise<SaveState> {
-    return Promise.resolve({
-      canvas: {
-        scale: 1,
-        x: 0,
-        y: 0,
-      },
-      graph: {
-        visibleNodes: {},
-      },
-    });
+  get(id: string): Promise<SaveState | null> {
+    return Promise.resolve(null);
   }
   set(id: string, state: SaveState): Promise<void> {
     return Promise.resolve();
