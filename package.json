@@ -2,7 +2,7 @@
   "name": "domain-graph-vscode",
   "displayName": "Domain Graph for VSCode",
   "description": "Beautiful, interactive visualizations for GraphQL schemas",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/domain-graph/vscode.git"
