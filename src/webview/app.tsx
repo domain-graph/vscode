@@ -8,13 +8,11 @@ import React, {
 
 import {
   DomainGraph,
-  getIntrospection,
   Icons,
-  ParseError,
   SaveState,
   SaveStateRepository,
 } from 'domain-graph';
-import { IntrospectionQuery } from 'graphql';
+import { parse, DocumentNode } from 'graphql';
 
 import { Message, SaveStateMessage } from '../message-types';
 import { getInitialState } from './initial-state';
@@ -34,27 +32,28 @@ export class NullRepository implements SaveStateRepository {
   }
 }
 
+type ParseError = {
+  message: string;
+};
+
 const vscode = acquireVsCodeApi<Record<string, SaveState>>();
 const repository = new NullRepository(); // new WebviewRepository(vscode); // TODO: put this back.
 
 export const App: React.FC<{}> = () => {
   const [documentUri, setDocumentUri] = useState<string>('default');
-  const [introspection, setIntrospection] = useState<IntrospectionQuery | null>(
-    null,
-  );
+  const [documentNode, setDocumentNode] = useState<DocumentNode | null>(null);
   const [parseErrors, setParseErrors] = useState<readonly ParseError[]>([]);
   const [saveState, setSaveState] = useState<SaveState | undefined>();
 
   useEffect(() => {
     const initialState = getInitialState();
     if (initialState?.documentText) {
-      const { introspection: query, errors } = getIntrospection(
-        initialState.documentText,
-      );
-      if (query) {
-        setIntrospection(query);
+      try {
+        const doc = parse(initialState.documentText);
+        setDocumentNode(doc);
+      } catch (ex: any) {
+        setParseErrors([{ message: ex.message }]);
       }
-      setParseErrors(errors);
     }
 
     if (initialState?.state) {
@@ -66,11 +65,12 @@ export const App: React.FC<{}> = () => {
     switch (message.type) {
       case 'update':
         setDocumentUri(message.documentUri);
-        const { introspection: query, errors } = getIntrospection(message.text);
-        if (query) {
-          setIntrospection(query);
+        try {
+          const doc = parse(message.text);
+          setDocumentNode(doc);
+        } catch (ex: any) {
+          setParseErrors([{ message: ex.message }]);
         }
-        setParseErrors(errors);
 
         setSaveState(message.state || undefined);
         break;
@@ -98,7 +98,7 @@ export const App: React.FC<{}> = () => {
 
   return (
     <>
-      {!!parseErrors.length && !introspection && (
+      {!!parseErrors.length && !documentNode && (
         <div className="c-parse-errors">
           <h1>
             <Icons.AlertTriangle size={72} strokeWidth={5} />
@@ -111,10 +111,10 @@ export const App: React.FC<{}> = () => {
           </ul>
         </div>
       )}
-      {!!introspection && (
+      {!!documentNode && (
         <DomainGraph
           graphId={documentUri}
-          introspection={introspection}
+          documentNode={documentNode}
           repository={repository}
           saveState={saveState}
           onSaveState={handleSaveState}
